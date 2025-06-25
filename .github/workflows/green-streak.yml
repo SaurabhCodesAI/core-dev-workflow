@@ -1,5 +1,5 @@
 
-name: stealth-sync engine
+name: Stealth-sync engine
 
 on:
   schedule:
@@ -22,7 +22,7 @@ jobs:
         git config --global user.name "SaurabhCodesAI"
         git config --global user.email "saurabhpareek228@gmail.com"
 
-    - name: Make Elite Random Commits
+    - name: Sync Activity Logs
       run: |
         NUM=$((RANDOM % 31 + 5))
         for i in $(seq 1 $NUM); do

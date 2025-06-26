@@ -1,4 +1,3 @@
-
 name: Stealth-sync engine
 
 on:
@@ -24,14 +23,19 @@ jobs:
 
     - name: Sync Activity Logs
       run: |
-        NUM=$((RANDOM % 31 + 5))
+        export TZ=$(shuf -n 1 -e Asia/Kolkata Europe/Berlin America/New_York)
+        NUM=$((RANDOM % 4 + 2))  # 2–5 commits per run
+
         for i in $(seq 1 $NUM); do
-          FILE="logs/log_$(date +%s%N).md"
-          echo "Log $i at $(date)" > $FILE
-          echo "Generated output: $(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)" >> $FILE
-          git add $FILE
+          DIR=$(shuf -n 1 -e logs data notes scratch)
+          mkdir -p "$DIR"
+          FILE="$DIR/log_$(date +%s%N).md"
+          echo "Log $i at $(date)" > "$FILE"
+          echo "Generated output: $(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20)" >> "$FILE"
+          git add "$FILE"
           git commit -m "Log update: $(head /dev/urandom | tr -dc A-Za-z | head -c 8)"
           sleep $((RANDOM % 90 + 30))
         done
+
         git pull --rebase
         git push

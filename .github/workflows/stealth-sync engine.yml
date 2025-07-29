@@ -9,34 +9,30 @@ permissions:
   contents: write
 
 jobs:
-  α:
+  stealth_sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Ω
-      uses: actions/checkout@v3
+      - name: Ω
+        uses: actions/checkout@v3
 
-    - name: ψ
-      run: |
-        git config --global user.name "α"
-        git config --global user.email "x@y.z"
+      - name: ψ
+        run: |
+          git config --global user.name "α"
+          git config --global user.email "x@y.z"
 
-    - name: π
-      run: |
-        [ $((RANDOM % 4)) -eq 0 ] && echo "✘" && exit 0
+      - name: π
+        run: |
+          [ $((RANDOM % 4)) -eq 0 ] && echo "✘" && exit 0
 
-    - name: λ
-      run: |
-        export TZ=$(shuf -n 1 -e Asia/Kolkata Europe/Berlin America/New_York)
-        N=$((RANDOM % 7 + 2))
-        for _ in $(seq 1 $N); do
-          P=$(shuf -n 1 -e a b c d)
-          mkdir -p "$P"
-          T="$P/.$(date +%s%N).md"
-          echo "$(date) $_" > "$T"
-          echo "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)" >> "$T"
-          git add "$T"
-          git commit -m "$(head /dev/urandom | tr -dc a-z | head -c 6)"
-          sleep $((RANDOM % 90 + 30))
-        done
-        git pull --rebase
-        git push
+      - name: λ
+        run: |
+          export TZ=$(shuf -n 1 -e Asia/Kolkata Europe/Berlin America/New_York)
+          N=$((RANDOM % 7 + 2))
+          for _ in $(seq 1 $N); do
+            P=$(shuf -n 1 -e a b c d)
+            mkdir -p "$P"
+            T="$P/.$(date +%s%N).md"
+            echo "$(date) $_" > "$T"
+            echo "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)" >> "$T"
+            git add "$T"
+            git commit -m "$(head /dev/

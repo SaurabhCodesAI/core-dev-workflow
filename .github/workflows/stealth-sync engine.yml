@@ -1,8 +1,8 @@
-name: Δ
+name: Stealth Sync Engine
 
 on:
   schedule:
-    - cron: '21 9 * * *'
+    - cron: '21 9 * * *'  # Daily at 09:21 UTC
   workflow_dispatch:
 
 permissions:
@@ -12,19 +12,19 @@ jobs:
   stealth_sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Ω
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: ψ
+      - name: Set Git Identity
         run: |
-          git config --global user.name "α"
-          git config --global user.email "x@y.z"
+          git config --global user.name "Stealth Bot"
+          git config --global user.email "stealth@example.com"
 
-      - name: π
+      - name: Random Skip (25% chance)
         run: |
-          [ $((RANDOM % 4)) -eq 0 ] && echo "✘" && exit 0
+          [ $((RANDOM % 4)) -eq 0 ] && echo "🛑 Skipping run" && exit 0 || echo "✅ Continuing..."
 
-      - name: λ
+      - name: Stealth Commit
         run: |
           export TZ=$(shuf -n 1 -e Asia/Kolkata Europe/Berlin America/New_York)
           N=$((RANDOM % 7 + 2))
@@ -35,4 +35,6 @@ jobs:
             echo "$(date) $_" > "$T"
             echo "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)" >> "$T"
             git add "$T"
-            git commit -m "$(head /dev/
+            git commit -m "stealth-sync: $(date +%s)"
+          done
+          git push

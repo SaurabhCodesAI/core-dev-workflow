@@ -2,7 +2,7 @@ name: Stealth Sync Engine
 
 on:
   schedule:
-    - cron: '21 9 * * *'  # Daily at 09:21 UTC
+    - cron: '21 9 * * *' 
   workflow_dispatch:
 
 permissions:
@@ -20,21 +20,31 @@ jobs:
           git config --global user.name "Stealth Bot"
           git config --global user.email "stealth@example.com"
 
+      - name: Set up GitHub token auth
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
       - name: Random Skip (25% chance)
         run: |
-          [ $((RANDOM % 4)) -eq 0 ] && echo "🛑 Skipping run" && exit 0 || echo "✅ Continuing..."
+          SKIP=$(shuf -i 0-3 -n 1)
+          if [ "$SKIP" -eq 0 ]; then
+            echo "🛑 Skipping run"
+            exit 0
+          fi
+          echo "✅ Continuing..."
 
       - name: Stealth Commit
         run: |
+          set -e  # Exit on errors
           export TZ=$(shuf -n 1 -e Asia/Kolkata Europe/Berlin America/New_York)
-          N=$((RANDOM % 7 + 2))
-          for _ in $(seq 1 $N); do
+          N=$(shuf -i 2-8 -n 1)
+          for i in $(seq 1 $N); do
             P=$(shuf -n 1 -e a b c d)
             mkdir -p "$P"
             T="$P/.$(date +%s%N).md"
-            echo "$(date) $_" > "$T"
+            echo "$(date) $i" > "$T"
             echo "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)" >> "$T"
             git add "$T"
             git commit -m "stealth-sync: $(date +%s)"
           done
-          git push
+          git push origin HEAD

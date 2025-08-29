@@ -17,8 +17,8 @@ jobs:
 
       - name: Set Git Identity
         run: |
-          git config --global user.name "Stealth Bot"
-          git config --global user.email "stealth@example.com"
+          git config --global user.name "SaurabhCodesAI"
+          git config --global user.email "saurabhpareek228@gmail.com"
 
       - name: Set up GitHub token auth
         run: |
